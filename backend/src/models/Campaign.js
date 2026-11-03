@@ -66,6 +66,13 @@ const campaignSchema = new mongoose.Schema(
       index: true,
     },
 
+    creatorVerificationStatus: {
+  type: String,
+  enum: ["pending", "verified", "rejected"],
+  default: "pending",
+  index: true,
+},
+
     evidence: [
       {
         name: {
@@ -83,6 +90,63 @@ const campaignSchema = new mongoose.Schema(
         },
       },
     ],
+
+    campaignEvidence: {
+  disasterProof: [
+    {
+      originalName: { type: String, required: true, trim: true },
+      storageKey: { type: String, required: true },
+      mimeType: { type: String, required: true },
+      size: { type: Number, required: true, min: 1 },
+      contentHash: { type: String, default: null },
+      uploadedAt: { type: Date, default: Date.now },
+    },
+  ],
+
+  authorizationDocuments: [
+    {
+      originalName: { type: String, required: true, trim: true },
+      storageKey: { type: String, required: true },
+      mimeType: { type: String, required: true },
+      size: { type: Number, required: true, min: 1 },
+      contentHash: { type: String, default: null },
+      uploadedAt: { type: Date, default: Date.now },
+    },
+  ],
+
+  locationEvidence: [
+    {
+      originalName: { type: String, required: true, trim: true },
+      storageKey: { type: String, required: true },
+      mimeType: { type: String, required: true },
+      size: { type: Number, required: true, min: 1 },
+      contentHash: { type: String, default: null },
+      uploadedAt: { type: Date, default: Date.now },
+    },
+  ],
+
+  photosAndVideos: [
+    {
+      originalName: { type: String, required: true, trim: true },
+      storageKey: { type: String, required: true },
+      mimeType: { type: String, required: true },
+      size: { type: Number, required: true, min: 1 },
+      contentHash: { type: String, default: null },
+      uploadedAt: { type: Date, default: Date.now },
+    },
+  ],
+
+  additionalDocuments: [
+    {
+      originalName: { type: String, required: true, trim: true },
+      storageKey: { type: String, required: true },
+      mimeType: { type: String, required: true },
+      size: { type: Number, required: true, min: 1 },
+      contentHash: { type: String, default: null },
+      uploadedAt: { type: Date, default: Date.now },
+    },
+  ],
+},
 
     verification: {
       reviewedBy: {

@@ -19,13 +19,16 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
+      - creator_documents:/app/private/creator-verification
+      - campaign_evidence:/app/private/campaign-evidence
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/trustchain
+      - MONGO_URI=mongodb://mongodb:27017/trustchain?replicaSet=rs0
     depends_on:
       - mongodb
 
   mongodb:
     image: mongo:8
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     ports:
       - "27017:27017"
     volumes:
@@ -33,3 +36,5 @@ services:
 
 volumes:
   mongodb_data:
+  creator_documents:
+  campaign_evidence:

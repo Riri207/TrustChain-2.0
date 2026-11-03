@@ -2,9 +2,11 @@
 const express = require("express");
 const authRoutes = require("./routes/authRoutes");
 const campaignRoutes = require("./routes/campaignRoutes");
+const donationRoutes = require("./routes/donationRoutes");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const creatorVerificationRoutes = require("./routes/creatorVerificationRoutes");
 
 const app = express();
 
@@ -20,6 +22,8 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/campaigns", campaignRoutes);
+app.use("/api/donations", donationRoutes);
+app.use("/api/creator-verification", creatorVerificationRoutes);
 
 // Database health-check route
 app.get("/api/health", (req, res) => {

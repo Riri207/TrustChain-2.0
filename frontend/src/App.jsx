@@ -1,122 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+
+import MyCampaigns from "./pages/MyCampaigns";
+import { Routes, Route } from "react-router-dom";
+import Profile from "./pages/Profile";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import MyDonations from "./pages/MyDonations";
+import ProtectedRoute from "./components/ProtectedRoute";
+import CreateCampaignPage from "./pages/CreateCampaignPage";
+import VerifierDashboard from "./pages/VerifierDashboard";
+import Donate from "./pages/Donate";
+import CampaignsPage from "./pages/CampaignsPage";
+import ImpactPage from "./pages/ImpactPage";
+import About from "./pages/About";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <Routes>
+      {/* Public routes */}
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/campaigns" element={<CampaignsPage />} />
+      <Route path="/impact" element={<ImpactPage />} />
+      <Route path="/about" element={<About />} />
 
-      <div className="ticks"></div>
+      {/* Public campaign details and donation page */}
+      <Route path="/campaign/:id" element={<Donate />} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      {/* Verifier Dashboard: verifier and admin only */}
+      <Route
+        path="/verifier/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={["verifier", "admin"]} />
+        }
+      >
+        <Route index element={<VerifierDashboard />} />
+      </Route>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* Protected routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/my-donations" element={<MyDonations />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/my-campaigns" element={<MyCampaigns />} />
+      </Route>
+
+      {/* Campaign creation: donor and creator only */}
+      <Route
+        path="/create-campaign"
+        element={
+          <ProtectedRoute allowedRoles={["donor", "creator"]} />
+        }
+      >
+        <Route index element={<CreateCampaignPage />} />
+      </Route>
+    </Routes>
+  );
 }
 
-export default App
+export default App;
